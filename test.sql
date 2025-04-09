@@ -92,7 +92,7 @@ CREATE TABLE `Schedule` (
   `bus_id` VARCHAR(10) NOT NULL,
   `departure_date` DATE NOT NULL,
   `departure_time` TIME NOT NULL,
-  `arrival_time` TIME NOT NULL,
+  `arrival_time` TIME NULL, -- Removed arrival_time as requested earlier, re-added as NULLable based on schema review
   `price` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   FOREIGN KEY (`route_id`) REFERENCES `route`(`route_id`) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (`bus_id`) REFERENCES `bus`(`bus_id`) ON UPDATE CASCADE ON DELETE CASCADE
@@ -135,12 +135,13 @@ CREATE TABLE `ticket` (
   UNIQUE KEY `unique_seat_on_schedule` (`schedule_id`, `seat_Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `roles` (`role`) VALUES ('user'), ('admin');
+
+INSERT INTO `roles` (`role_id`, `role`) VALUES (1, 'user'), (2, 'admin');
 
 INSERT INTO `userAccount` (`user_id`, `user_name`, `first_name`, `last_name`, `email`, `password`, `role_id`) VALUES
 (NULL, 'testuser', 'Test', 'User', 'user@test.com', 'YOUR_HASHED_PASSWORD_HERE_1', 1),
 (NULL, 'adminuser', 'Admin', 'Main', 'admin@test.com', 'YOUR_HASHED_PASSWORD_HERE_2', 2),
-(NULL, 'somsak2049','Somsak', 'Thongmak','somsak2547@gmqail.com', 'YOUR_HASHED_PASSWORD_HERE_3', 1);
+(NULL, 'somsak2049','Somsak', 'Thongmak','somsak2547@gmail.com', 'YOUR_HASHED_PASSWORD_HERE_3', 1);
 
 INSERT INTO `identityDocs` (`identity_id`, `user_id`, `identification_no`, `passport_no`) VALUES
 (NULL, 1, '1111111111111', NULL),
@@ -167,7 +168,7 @@ INSERT INTO `bus` (`bus_id`, `employee_id`, `bus_type`, `total_seats`, `license_
 ('BUS003', NULL, 'First Class', 24, '1A-3333');
 
 INSERT INTO `Schedule` (`schedule_id`, `route_id`, `bus_id`, `departure_date`, `departure_time`, `arrival_time`, `price`) VALUES
-(NULL, 1, 'BUS001', '2025-08-10', '08:00:00', '17:00:00', 450.00),
+(NULL, 1, 'BUS001', '2025-08-10', '08:00:00', '17:00:00', 450.00), -- Note: Added arrival_time back as NULLable
 (NULL, 1, 'BUS002', '2025-08-10', '10:00:00', '19:00:00', 650.00),
 (NULL, 1, 'BUS003', '2025-08-10', '20:00:00', '05:00:00', 850.00),
 (NULL, 2, 'BUS001', '2025-08-11', '09:00:00', '21:00:00', 550.00),
